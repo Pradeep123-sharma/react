@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 
 
 function App() {
@@ -8,26 +8,31 @@ function App() {
   const [password, setPassword]= useState("")
 
   // Using useCallback hook to generate password
+  /* Humne useCallback mei 'setPassword' isliye liya hai */
   const passwordGenerator = useCallback( ()=> {
     // 'pass' variable jo bhi password generate hoga isme dalenge
     let pass = ""
     // 'str' varible mein password mein kon-konse characters aane chahiye
     let str = "ABCDEFGHIJKLMNOPQURTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
+    if(numberAllowed) str+= "0123456789"
+    if(charactersAllowed) str+= "@#$%^~&*_-[]{}"
+
     // loop to generate random password
-    for (let i = 1; i < array.length; i++) {
-      let char = Math.floor(Math.random() * str + 1)
+    for (let i = 1; i <= length; i++) {
+      let char = Math.floor(Math.random() * str.length + 1)
       
       // Kyunki 'char' mein jo value aayegi vo array ki index aayega vo value nhi aayegi, isliye charAt() 
-      pass = str.charAt(char)
+      pass += str.charAt(char)
     }
 
     setPassword(pass)
 
-    if(numberAllowed) str+= "0123456789"
-    if(charactersAllowed) str+= "@#$%^~&*_-[]{}"
-
   }, [length, numberAllowed, charactersAllowed, setPassword])
+
+  useEffect( ()=> { 
+    passwordGenerator()
+  }, [length, numberAllowed, charactersAllowed, passwordGenerator])
   
   return (
     <>
@@ -48,7 +53,9 @@ function App() {
             <input 
               type="range"
               min={6}
-              max={100}
+              max={16
+
+              }
               value={length}
               className='cursor-pointer'
               onChange={ (e)=> {setLength(e.target.value)}
@@ -65,6 +72,16 @@ function App() {
               }
             />
             <label htmlFor='numberInput'>Numbers</label>
+          </div>
+          <div className='flex items-center gap-x-1'>
+            <input
+              type="checkbox"
+              defaultChecked= {charactersAllowed}
+              id='characterInput'
+              onChange={(e) => { setCharactersAllowed((prev) => !prev) }
+              }
+            />
+            <label htmlFor='characterInput'>Characters</label>
           </div>
         </div>
       </div>
