@@ -7,6 +7,9 @@ function App() {
   const [charactersAllowed, setCharactersAllowed]= useState(false)
   const [password, setPassword]= useState("")
 
+  // useRef hook 
+  const passwordRef = useRef(null)
+
   // Using useCallback hook to generate password
   /* Humne useCallback mei 'setPassword' isliye liya hai */
   const passwordGenerator = useCallback( ()=> {
@@ -30,6 +33,14 @@ function App() {
 
   }, [length, numberAllowed, charactersAllowed, setPassword])
 
+  /* Ab yaha par humne useCallback ka isliye istemaal kiya hai keval optimisation ke liye. Kyunki jaha jaha par bhi dependency hai jaha par ye run hoga to vaha par keval optimised kar do jaise yaha par password par dependent hai. */
+  const copyPasswordToClipboard = useCallback(()=>{
+    // More optimised way
+    passwordRef.current?.select()
+    // First way
+    window.navigator.clipboard.writeText(password)
+  }, [password])
+
   useEffect( ()=> { 
     passwordGenerator()
   }, [length, numberAllowed, charactersAllowed, passwordGenerator])
@@ -45,8 +56,14 @@ function App() {
             className='outline-none w-full py-1 px-3'
             placeholder="Password"
             readOnly 
+            ref={passwordRef} //Now ab passwordRef ke paas iska reference hai
           />
-          <button className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'>Copy</button>
+          {/* Button par click karne par konsa function execute hoga uska refrernce diya hai. */}
+          <button
+          onClick={copyPasswordToClipboard} 
+          className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'>
+            Copy
+          </button>
         </div>
         <div className='flex text-sm gap-x-2'>
           <div className='flex items-center gap-x-1'>
