@@ -5,10 +5,10 @@ function InputBox({
     label,
     amount,
     onAmountChange,
-    onCurrrencyChange,
+    onCurrencyChange,
     /* Yaha par hum chah rge hai ki ye currencyOptions array mei pass karo. Bhale hi json data aayega lekin hum array se hi loop through karenge. */
     currencyOptions = [],
-    seLectCurrency = "usd",
+    selectCurrency = "usd",
     amountDisable = false,
     currencyDisable = false,
 
@@ -41,8 +41,8 @@ function InputBox({
                 <select
                     className="rounded-lg px-1 py-1 bg-gray-100 cursor-pointer outline-none"
                     disabled = {currencyDisable}
-                    value = {seLectCurrency}
-                    onChange={(e)=> onCurrrencyChange && onCurrrencyChange(e.target.value)}
+                    value = {selectCurrency}
+                    onChange={(e)=> onCurrencyChange && onCurrencyChange(e.target.value)}
                 >
                     {/* When you are using any loops then to improve performance, use KEYS */}
                     {currencyOptions.map((currency) => (
