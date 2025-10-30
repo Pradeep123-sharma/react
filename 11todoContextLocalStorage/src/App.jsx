@@ -1,7 +1,9 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { TodoProvider } from './contexts'
+import TodoForm from './components/TodoForm'
+import TodoItem from './components/TodoItem'
 
 function App() {
   /* To kyunki todos hai to hume kahi to rakhna padega to hum state mei rakhenge. */
@@ -31,6 +33,26 @@ function App() {
     setTodos((prev)=> prev.filter((todo) => todo.id !== id))
   }
 
+  const toggleComplete = (id) => {
+    /* 
+      To hum yaha par ye kar rhe hai ki pehle to id se match kar liya aur agar true hai to to pehle to 'prevTodo' object hai usko spread kar liya aur fir simply humne completed field hai usko override kar denge not expression se to agar true hoga to false kar dega and vice versa.
+    */
+    setTodos((prev) => prev.map((prevTodo) => prevTodo.id === id ? {...prevTodo, completed: !prevTodo.completed} : prevTodo))
+  }
+
+  // Local Storage Work
+  useEffect(() => {
+    // NMow first we'll get items from storage\
+    const todos = JSON.parse(localStorage.getItem("todos"))
+    if (todos && todos.length > 0) {
+      setTodos(todos)
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos])
+
   return (
     <TodoProvider value={{todos, addTodo, updateTodo, removeTodo, toggleComplete}}>
       <div className="bg-[#172842] min-h-screen py-8">
@@ -38,9 +60,15 @@ function App() {
           <h1 className="text-2xl font-bold text-center mb-8 mt-2">Manage Your Todos</h1>
           <div className="mb-4">
             {/* Todo form goes here */}
+            <TodoForm />
           </div>
           <div className="flex flex-wrap gap-y-3">
             {/*Loop and Add TodoItem here */}
+            {todos.map((todo) => (
+              <div key={todo.id} className='w-full'>
+                <TodoItem />
+              </div>
+            ))}
           </div>
         </div>
       </div>    
