@@ -9,7 +9,7 @@ import { useTodo } from '../contexts/TodoContext';
             Determine status: It uses todo.completed to set the initial state and styling (like adding a strikethrough) of the checkbox
 */
 function TodoItem({todo}) {
-    console.log("Todo prop:", todo); 
+    // console.log("Todo prop:", todo); 
     const {updateTodo, removeTodo, toggleComplete} = useTodo()
     const [isTodoEditable, setIsTodoEditable] = useState(false)
     const [todoMsg, setTodoMsg] = useState(todo.todo)

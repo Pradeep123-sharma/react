@@ -63,10 +63,13 @@ function App() {
             <TodoForm />
           </div>
           <div className="flex flex-wrap gap-y-3">
-            {/*Loop and Add TodoItem here */}
+            {/*Loop and Add TodoItem here. Looping hum isliye kar rhe hai kyunki hume 'TodoItem' comp ko individual todo as a prop pass karna hai. */}
             {todos.map((todo) => (
+              /* 
+                Kyunki har waqt div repeat hoga to use unique banane ke liye hum 'key' prop pass karte hai. If you don't use it then React performance will be drastically degrade. In 'key' prop we should always provide unique value as id, we can't provide index because it somehow affects performance.(See Gemini chat "Passing Todo Object to TodoItem") 
+              */
               <div key={todo.id} className='w-full'>
-                <TodoItem />
+                <TodoItem todo={todo}/>
               </div>
             ))}
           </div>
