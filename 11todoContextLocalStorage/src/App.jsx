@@ -42,7 +42,7 @@ function App() {
 
   // Local Storage Work
   useEffect(() => {
-    // NMow first we'll get items from storage\
+    // Now first we'll get items from storage
     const todos = JSON.parse(localStorage.getItem("todos"))
     if (todos && todos.length > 0) {
       setTodos(todos)
