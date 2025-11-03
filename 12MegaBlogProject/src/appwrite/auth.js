@@ -69,4 +69,4 @@ export class AuthService {
 // Here 'authService' is an object.
 const authService = new AuthService()
 
-export default AuthService
+export default authService
