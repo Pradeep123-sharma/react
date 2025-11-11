@@ -88,7 +88,7 @@ export class Service {
             return await this.tablesDB.listRows(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
-                queries
+                queries,
             )
         } catch (error) {
             console.log("Appwrite service :: getAllPosts :: error = ", error);
