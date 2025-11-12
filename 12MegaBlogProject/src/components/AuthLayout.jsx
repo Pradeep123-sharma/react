@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 // By default 'authentication' is true but it can change also who calls this component.
-function Protected(children, authentication = true) {
+function Protected({children, authentication = true}) {
 
     const navigate = useNavigate()
     const [loader, setLoader] = useState(true)

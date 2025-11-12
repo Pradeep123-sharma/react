@@ -5,7 +5,7 @@ import { Container, PostCard } from '../components'
 
 function Home() {
     // First we'll check for the post if itis available
-    const [posts, setPosts] = useState(null)
+    const [posts, setPosts] = useState([])
     useEffect(() => {
         service.getAllPosts().then((posts)=> {
             if (posts) {
@@ -14,22 +14,7 @@ function Home() {
         })
     }, []);
     
-    if (posts.length > 0) {
-        return (
-            <div className='w-full py-8'>
-                <Container>
-                    <div className='flex flex-wrap'>
-                        {posts.map((post) => {
-                            <div key={post.$id} className='p-2 w-1/4'>
-                                {/* Yaha par hum aise 'post' nhi de skte kyunki 1 hi post aayegi to isse achha ye hai ki hum usko spread karde fi jitni bhi posts hai vpo 1-1 karke aate jayegi. */}
-                                <PostCard {...post}/>
-                            </div>
-                        })}
-                    </div>
-                </Container>
-            </div>
-        )
-    }else{
+    if (posts.length === 0) {
         return (
             <div className='w-full py-8 mt-4 text-center'>
                 <Container>
@@ -39,6 +24,21 @@ function Home() {
                                 Login to read posts !
                             </h1>
                         </div>
+                    </div>
+                </Container>
+            </div>
+        )
+    }else{
+        return (
+            <div className='w-full py-8'>
+                <Container>
+                    <div className='flex flex-wrap'>
+                        {posts.map((post) => {
+                            <div key={post.$id} className='p-2 w-1/4'>
+                                {/* Yaha par hum aise 'post' nhi de skte kyunki 1 hi post aayegi to isse achha ye hai ki hum usko spread karde fi jitni bhi posts hai vpo 1-1 karke aate jayegi. */}
+                                <PostCard {...post} />
+                            </div>
+                        })}
                     </div>
                 </Container>
             </div>
