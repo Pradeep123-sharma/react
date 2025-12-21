@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 /* Appwrite se aa rha hai to 'id' '$id' karke hi liya jata hai, aur ye post ki id hai.
 'featuredImage' image ki id hai. */
 function PostCard({$id, title, featuredImage}) {
-    console.log("PostCard featuredImage:", featuredImage);
+    // console.log("PostCard featuredImage:", featuredImage);
     return (
         /* Kyunki pura card hi clickable hoga. Us card ko click karke hi article padenge isliye link tag mei wrap karenge.
         Its a very important feature of link is ki hum jaha par hai uske aage se url de skte hai pura url dene ki jarurat nhi hai.

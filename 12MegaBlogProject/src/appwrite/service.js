@@ -136,12 +136,12 @@ export class Service {
     }
 
     getFilePreview(fileId) {
-        console.log(fileId)
+        // console.log(fileId)
 
-        const url = this.storage.getFilePreview(config.appwriteBucketId, fileId);
-        console.log("Service url: ",url);
+        const url = this.storage.getFileView(config.appwriteBucketId, fileId);
+        // console.log("Service url: ",url);
         
-        return url.href
+        return url
     }
 }
 
