@@ -33,16 +33,16 @@ function PostForm({post}) {
     const submit = async (data) => {
         if (post) {
             // File handling 
-            const file = data.image[0] ? service.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
 
             // Deleting the existing file
             if (file) {
-                service.deleteFile(data.featuredImage)
+                service.deleteFile(post.featuredImage)
             }
-            const dbPost = await service.updatPost(post.$id, {
+            const dbPost = await service.updatePost(post.$id, {
                 ...data,
-                featuredImage: file ? file.$id : undefined
-            })
+                featuredImage: file ? file.$id : post.featuredImage,
+            });
             if (dbPost) {
                 navigate(`/post/${dbPost.$id}`)
             }
@@ -65,11 +65,11 @@ function PostForm({post}) {
     }
 
     const slugTransform = useCallback((value) => {
-        if (value) {
+        if (value && typeof value === "string") {
             return value
             .trim()
             .toLowerCase()
-            .replace(/^[a-zA-Z\d\s]+/g, '-')
+            .replace(/[^a-zA-Z\d\s]+/g, '-')
             .replace(/\s/g, '-')
         }
         return ''
@@ -123,10 +123,10 @@ function PostForm({post}) {
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !post })}
                 />
-                {post && (
+                {post?.featuredImage && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={service.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />

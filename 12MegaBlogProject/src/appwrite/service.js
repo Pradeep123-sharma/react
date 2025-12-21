@@ -14,26 +14,29 @@ export class Service {
         this.storage = new Storage(this.client);
     }
 
-    async createPost(title, slug, featuredImage, content, status, userId) {
+    async createPost({title, slug, featuredImage, content, status, userId} = {}) {
+        // ensure we use a valid rowId: prefer provided slug (string), otherwise generate one
+        const rowId = (typeof slug === "string" && slug.trim()) ? slug.trim() : ID.unique();
         try {
             return await this.tablesDB.createRow(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
-                slug, // row ID
+                rowId,
                 {
-                    title,
-                    content,
-                    featuredImage,
-                    status,
-                    userId,
+                    title: (typeof title === "string" ? title : String(title || "")).slice(0, 255),
+                    content: content || "",
+                    featuredImage: featuredImage || "",
+                    status: status || "active",
+                    userId: userId || "",
                 }
             )
         } catch (error) {
             console.log("Appwrite service :: createPost :: error = ", error);
+            return false;
         }
     }
 
-    async updatPost(slug, {title, featuredImage, content, status}) {
+    async updatePost(slug, {title, featuredImage, content, status}) {
         try {
             return await this.tablesDB.updateRow(
                 config.appwriteDatabaseId,
@@ -47,7 +50,7 @@ export class Service {
                 }
             )
         } catch (error) {
-            console.log("Appwrite service :: updatPost :: error = ", error);
+            console.log("Appwrite service :: updatePost :: error = ", error);
         }
     }
 
@@ -67,10 +70,19 @@ export class Service {
 
     async getPost(slug) {
         try {
+            // normalize incoming parameter: accept either a string id or an object containing $id / id / slug
+            let rowId = slug;
+            if (typeof slug === "object" && slug !== null) {
+                rowId = slug.$id ?? slug.id ?? slug.slug ?? null;
+            }
+            if (!rowId || typeof rowId !== "string" || rowId === "[object Object]") {
+                console.warn("Appwrite service :: getPost :: invalid rowId:", rowId);
+                return false;
+            }
             return await this.tablesDB.getRow(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
-                slug
+                rowId
             )
         } catch (error) {
             console.log("Appwrite service :: getPost :: error = ", error);
@@ -124,10 +136,12 @@ export class Service {
     }
 
     getFilePreview(fileId) {
-        return this.storage.getFilePreview(
-            config.appwriteBucketId,
-            fileId
-        )
+        console.log(fileId)
+
+        const url = this.storage.getFilePreview(config.appwriteBucketId, fileId);
+        console.log("Service url: ",url);
+        
+        return url.href
     }
 }
 

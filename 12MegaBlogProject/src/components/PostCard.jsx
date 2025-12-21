@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 /* Appwrite se aa rha hai to 'id' '$id' karke hi liya jata hai, aur ye post ki id hai.
 'featuredImage' image ki id hai. */
 function PostCard({$id, title, featuredImage}) {
+    console.log("PostCard featuredImage:", featuredImage);
     return (
         /* Kyunki pura card hi clickable hoga. Us card ko click karke hi article padenge isliye link tag mei wrap karenge.
         Its a very important feature of link is ki hum jaha par hai uske aage se url de skte hai pura url dene ki jarurat nhi hai.
@@ -13,8 +14,9 @@ function PostCard({$id, title, featuredImage}) {
         <Link to={`/post/${$id}`}>
             <div className='w-full bg-gray-100 rounded-xl p-4'>
                 <div className='w-full justify-center mb-4'>
-                    {/* For image we have to display file preview so we have already made a method in service file so we'll simply call that method and pass the id. */} 
-                    <img src={service.getFilePreview(featuredImage)} alt={title} className='rounded-xl' />
+                    {featuredImage && (
+                        <img src={service.getFilePreview(featuredImage)} alt={title} className='rounded-xl' />
+                    )}
                 </div>
                 <h2 className='text-xl font-bold'>{title}</h2>
             </div>

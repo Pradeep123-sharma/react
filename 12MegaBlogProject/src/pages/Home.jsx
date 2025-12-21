@@ -33,12 +33,12 @@ function Home() {
             <div className='w-full py-8'>
                 <Container>
                     <div className='flex flex-wrap'>
-                        {posts.map((post) => {
+                        {posts.map((post) => (
                             <div key={post.$id} className='p-2 w-1/4'>
                                 {/* Yaha par hum aise 'post' nhi de skte kyunki 1 hi post aayegi to isse achha ye hai ki hum usko spread karde fi jitni bhi posts hai vpo 1-1 karke aate jayegi. */}
                                 <PostCard {...post} />
                             </div>
-                        })}
+                        ))}
                     </div>
                 </Container>
             </div>

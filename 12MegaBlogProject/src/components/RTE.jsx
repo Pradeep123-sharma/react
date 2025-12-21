@@ -2,6 +2,7 @@
 import React from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { Controller } from 'react-hook-form'
+import config from '../config/config'
 
 /* 
     Why we need Controller ?
@@ -12,11 +13,12 @@ import { Controller } from 'react-hook-form'
     This 'control' actually comes from react-hook-from aur yhi responsible hai iski sari states ko parent form mei le jane ke liye.
 */
 
-function RTE(name, control, label, defaultValue="") {
+function RTE({name, control, label, defaultValue=""}) {
     return (
         <div className='w-full'>
             {label && <label className='inline-block mb-1 pl-1'>{label}</label>}
             <Controller 
+            apiKey={config.tinyMCEApiKey}
             name={name}
             // Jo bhi parent element isko call karega vo as it is control mei aa jayega.
             control={control}
@@ -25,6 +27,7 @@ function RTE(name, control, label, defaultValue="") {
             render={({field: {onChange}})=> (
                 // Aur fir yaha par jin jin elements ko render karna hai vo likhdo. For editor read documnentation.
                 <Editor
+                    apiKey='w7wej1dybdyf69f60b7mdq138pn6p97irts13n6eai0pnl8t'
                     initialValue={defaultValue}
                     init={{
                         initialValue: defaultValue,

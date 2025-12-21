@@ -6,20 +6,20 @@ import { useParams, useNavigate } from 'react-router-dom'
 function EditPost() {
     const [post, setPost] = useState(null)
     // Now we also need a slug to edit post.
-    const slug  = useParams()
-    const navigate = useNavigate
+    const {slug}  = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (slug) {
-            service.getPost(slug).then((post)=> {
+            service.getPost(slug).then((post) => {
                 if (post) {
-                    setPost(post)
+                    setPost(post);
                 }
-            })
+            });
         } else {
-            navigate('/')
+            navigate("/");
         }
-    }, [slug, navigate])
+    }, [slug, navigate]);
     
     return post ? <div className='py-8'>
         <Container>
